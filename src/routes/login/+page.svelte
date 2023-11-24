@@ -3,13 +3,14 @@
     <div class="card-body">
       <h2 class="card-title">Login</h2>
 
-      <form>
+      <form action="?/login" method="POST">
         <div class="form-control">
           <label class="label" for="email-input">
             <span class="label-text">Email</span>
           </label>
           <input
-            type="text"
+            type="email"
+            name="email"
             id="email-input"
             placeholder="email"
             class="input input-bordered"
@@ -21,6 +22,7 @@
           </label>
           <input
             type="password"
+            name="password"
             id="password-input"
             placeholder="password"
             class="input input-bordered"
