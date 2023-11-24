@@ -2,7 +2,7 @@
   import "../app.css";
   import Nav from "./Nav.svelte";
 
-  import { invalidate } from "$app/navigation";
+  import { invalidateAll } from "$app/navigation";
   import { onMount } from "svelte";
   import type { LayoutData } from "./$types";
 
@@ -15,7 +15,7 @@
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, _session) => {
       if (_session?.expires_at !== session?.expires_at) {
-        invalidate("supabase:auth");
+        invalidateAll();
       }
     });
 

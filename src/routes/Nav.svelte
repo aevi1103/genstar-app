@@ -2,11 +2,19 @@
   import { enhance } from "$app/forms";
   import type { SubmitFunction } from "@sveltejs/kit";
   import type { PageData } from "./$types";
+  import { writable } from "svelte/store";
 
   export let data: PageData;
 
+  const isLoading = writable(false);
+
   const submitLogout: SubmitFunction = async ({ cancel }) => {
+    isLoading.set(true);
+
     const { error } = await data.supabase.auth.signOut();
+
+    isLoading.set(false);
+
     if (error) {
       console.log(error);
     }
@@ -22,8 +30,13 @@
     <ul class="menu menu-horizontal px-1">
       {#if data.session}
         <li>
-          <form action="/logout" method="POST" use:enhance={submitLogout}>
-            <button type="submit" class="btn btn-sm btn-primary">Logout</button>
+          <form
+            action="/logout"
+            method="POST"
+            use:enhance={submitLogout}
+            class="formn-control"
+          >
+            <button type="submit">logout</button>
           </form>
         </li>
       {:else}
