@@ -14,6 +14,8 @@
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, _session) => {
+      // console.log("onAuthStateChange", { event, _session, session });
+
       if (_session?.expires_at !== session?.expires_at) {
         invalidateAll();
       }

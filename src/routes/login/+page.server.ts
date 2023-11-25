@@ -8,8 +8,6 @@ export const actions: Actions = {
   login: async ({ request, locals, url }) => {
     const provider = url.searchParams.get("provider") as Provider | null;
 
-    console.log({ provider });
-
     if (provider) {
       if (!OAUTH_PROVIDERS.includes(provider)) {
         return fail(400, {
@@ -21,7 +19,6 @@ export const actions: Actions = {
       });
 
       if (err) {
-        console.log(err);
         return fail(400, {
           message: "Something went wrong.",
         });

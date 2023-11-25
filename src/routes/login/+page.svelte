@@ -13,8 +13,6 @@
   };
 
   const submitSocialLogin: SubmitFunction = async ({ action, cancel }) => {
-    console.log("submitSocialLogin", action.searchParams.get("provider"));
-
     switch (action.searchParams.get("provider")) {
       case "google":
         await signInWithProvider("google");
