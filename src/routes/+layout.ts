@@ -2,6 +2,7 @@ import {
   PUBLIC_SUPABASE_ANON_KEY,
   PUBLIC_SUPABASE_URL,
 } from "$env/static/public";
+import type { DbResult, UserRoles } from "$types/database.types";
 import type { LayoutLoad } from "./$types";
 import {
   combineChunks,
@@ -40,5 +41,16 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
     data: { session },
   } = await supabase.auth.getSession();
 
-  return { supabase, session };
+  const userId = session?.user.id;
+
+  const userRoles = await supabase
+    .from("user_roles")
+    .select("*, role: roles ( * )")
+    .eq("user_id", userId);
+
+  const roles = userRoles.data?.map((userRole) => userRole.role.role as string);
+  const isAdmin = roles?.includes("admin");
+  const isUser = roles?.includes("user");
+
+  return { supabase, session, roles, isAdmin, isUser };
 };
