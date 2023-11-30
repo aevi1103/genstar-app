@@ -1,5 +1,7 @@
 <script lang="ts">
-  export let isAdmin: boolean;
+  import type { PageData } from "./$types";
+
+  export let data: PageData;
 </script>
 
 <li><a href="/">home</a></li>
@@ -7,7 +9,7 @@
 <li><a href="/about">about</a></li>
 <li><a href="/contact">contact</a></li>
 
-{#if isAdmin}
+{#if data.isAdmin}
   <li>
     <details>
       <summary>Admin</summary>
@@ -17,4 +19,15 @@
       </ul>
     </details>
   </li>
+{/if}
+
+{#if data.session}
+  <li>
+    <form action="/logout" method="POST" class="formn-control">
+      <button type="submit">logout</button>
+    </form>
+  </li>
+{:else}
+  <li><a href="/login">login</a></li>
+  <li><a href="/register">register</a></li>
 {/if}

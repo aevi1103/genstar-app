@@ -35,7 +35,7 @@
       <ul
         class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
       >
-        <Routes {isAdmin} />
+        <Routes {data} />
       </ul>
     </div>
     <a class="btn btn-ghost text-xl" href="/">GENSTAR</a>
@@ -43,7 +43,7 @@
 
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
-      <Routes {isAdmin} />
+      <Routes {data} />
     </ul>
   </div>
 
