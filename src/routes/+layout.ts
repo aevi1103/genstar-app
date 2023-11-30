@@ -2,7 +2,6 @@ import {
   PUBLIC_SUPABASE_ANON_KEY,
   PUBLIC_SUPABASE_URL,
 } from "$env/static/public";
-import type { DbResult, UserRoles } from "$types/database.types";
 import type { LayoutLoad } from "./$types";
 import {
   combineChunks,
@@ -41,16 +40,30 @@ export const load: LayoutLoad = async ({ fetch, data, depends }) => {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const userId = session?.user.id;
+  const getUserRoles = async () => {
+    const userId = session?.user.id;
+    let isAdmin: boolean = false;
+    let isUser: boolean = false;
 
-  const userRoles = await supabase
-    .from("user_roles")
-    .select("*, role: roles ( * )")
-    .eq("user_id", userId);
+    try {
+      const userRoles = !userId
+        ? null
+        : await supabase
+            .from("user_roles")
+            .select("*, role: roles ( * )")
+            .eq("user_id", userId);
 
-  const roles = userRoles.data?.map((userRole) => userRole.role.role as string);
-  const isAdmin = roles?.includes("admin");
-  const isUser = roles?.includes("user");
+      const roles = userRoles?.data?.map(
+        (userRole) => userRole.role.role as string
+      );
+      isAdmin = roles?.includes("admin") ?? false;
+      isUser = roles?.includes("user") ?? false;
+    } catch (error) {}
+
+    return { roles: [], isAdmin, isUser };
+  };
+
+  const { roles, isAdmin, isUser } = await getUserRoles();
 
   return { supabase, session, roles, isAdmin, isUser };
 };
