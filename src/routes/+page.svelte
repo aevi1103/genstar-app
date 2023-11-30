@@ -12,9 +12,9 @@
   {/if}
 
   <ul
-    class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+    class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
   >
-    {#if session}
+    {#if data.session}
       <li>
         <form action="/logout" method="POST" class="formn-control">
           <button type="submit">logout</button>
@@ -25,6 +25,31 @@
       <li><a href="/register">register</a></li>
     {/if}
   </ul>
+
+  <div class="dropdown">
+    <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+      <div class="w-10 rounded-full">
+        <img
+          alt="Avatar"
+          src={"https://avatars.dicebear.com/v2/female/e151626fb01e041d98dda6bc2a1d1fe3.svg"}
+        />
+      </div>
+    </div>
+    <ul
+      class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+    >
+      {#if data.session}
+        <li>
+          <form action="/logout" method="POST" class="formn-control">
+            <button type="submit">logout</button>
+          </form>
+        </li>
+      {:else}
+        <li><a href="/login">login</a></li>
+        <li><a href="/register">register</a></li>
+      {/if}
+    </ul>
+  </div>
 
   <br />
   {#if session}
