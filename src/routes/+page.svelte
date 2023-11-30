@@ -9,5 +9,11 @@
     <h1>Welcome {session.user.email}</h1>
   {:else}
     <h1>Welcome to Genstar</h1>
+    <p>
+      <a href="/login">Login</a>
+    </p>
+    <p>
+      <a href="/register">Register</a>
+    </p>
   {/if}
 </div>
