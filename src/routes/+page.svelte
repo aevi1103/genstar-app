@@ -26,8 +26,8 @@
     {/if}
   </ul>
 
-  <div class="dropdown">
-    <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+  <div class="dropdown" tabindex="0" role="button">
+    <div role="button" class="btn btn-ghost btn-circle avatar">
       <div class="w-10 rounded-full">
         <img
           alt="Avatar"
