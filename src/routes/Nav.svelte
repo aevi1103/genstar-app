@@ -16,8 +16,8 @@
 
 <div class="navbar bg-base-100">
   <div class="navbar-start">
-    <div class="dropdown">
-      <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+    <div class="dropdown" tabindex="0" role="button">
+      <div class="btn btn-ghost lg:hidden">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5"
@@ -49,8 +49,8 @@
 
   <div class="navbar-end">
     <div class="flex-none gap-2">
-      <div class="dropdown dropdown-end">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+      <div class="dropdown dropdown-end" tabindex="0" role="button">
+        <div class="btn btn-ghost btn-circle avatar">
           <div class="w-10 rounded-full">
             <img alt="Avatar" src={avatarUrl} />
           </div>

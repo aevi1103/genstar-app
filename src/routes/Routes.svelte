@@ -20,14 +20,3 @@
     </details>
   </li>
 {/if}
-
-{#if data.session}
-  <li>
-    <form action="/logout" method="POST" class="formn-control">
-      <button type="submit">logout</button>
-    </form>
-  </li>
-{:else}
-  <li><a href="/login">login</a></li>
-  <li><a href="/register">register</a></li>
-{/if}
