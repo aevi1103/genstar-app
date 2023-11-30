@@ -11,10 +11,26 @@
     <h1>Welcome to Genstar</h1>
   {/if}
 
-  <p>
-    <a href="/login">Login</a>
-  </p>
-  <p>
-    <a href="/register">Register</a>
-  </p>
+  <ul>
+    {#if session}
+      <li>
+        <form action="/logout" method="POST" class="formn-control">
+          <button type="submit">logout</button>
+        </form>
+      </li>
+    {:else}
+      <li><a href="/login">login</a></li>
+      <li><a href="/register">register</a></li>
+    {/if}
+  </ul>
+
+  <br />
+  {#if session}
+    <form action="/logout" method="POST" class="formn-control">
+      <button type="submit">logout</button>
+    </form>
+  {:else}
+    <a href="/login">login</a>
+    <a href="/register">register</a>
+  {/if}
 </div>
