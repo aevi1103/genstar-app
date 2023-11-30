@@ -11,7 +11,9 @@
     <h1>Welcome to Genstar</h1>
   {/if}
 
-  <ul class="menu menu-horizontal px-1">
+  <ul
+    class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+  >
     {#if session}
       <li>
         <form action="/logout" method="POST" class="formn-control">
