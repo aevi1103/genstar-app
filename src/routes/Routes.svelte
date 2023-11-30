@@ -2,6 +2,8 @@
   import type { PageData } from "./$types";
 
   export let data: PageData;
+
+  function onClick(event: Event) {}
 </script>
 
 <li><a href="/">home</a></li>
@@ -22,12 +24,12 @@
 {/if}
 
 {#if data.session}
-  <li>
+  <li on:click|preventDefault={onClick}>
     <form action="/logout" method="POST" class="formn-control">
       <button type="submit">logout</button>
     </form>
   </li>
 {:else}
-  <li><a href="/login">login</a></li>
-  <li><a href="/register">register</a></li>
+  <li on:click|preventDefault={onClick}><a href="/login">login</a></li>
+  <li on:click|preventDefault={onClick}><a href="/register">register</a></li>
 {/if}
