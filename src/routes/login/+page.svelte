@@ -78,11 +78,11 @@
             class="input input-bordered"
           />
         </div>
-        <label class="cursor-pointer label">
+        <!-- <label class="cursor-pointer label">
           <span class="label-text-alt">Remember me</span>
           <input type="checkbox" class="checkbox" />
           <span class="checkbox-mark"></span>
-        </label>
+        </label> -->
         <div class="form-control mt-6">
           <input type="submit" value="Login" class="btn btn-primary" />
         </div>

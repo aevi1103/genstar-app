@@ -31,8 +31,6 @@ export const load: LayoutServerLoad = async ({
 
   const { isAdmin } = await getUserRoles();
 
-  console.log("isAdmin layout server", isAdmin);
-
   if (!isAdmin) {
     throw redirect(307, "/");
   }
