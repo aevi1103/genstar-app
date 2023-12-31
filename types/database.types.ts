@@ -12,62 +12,42 @@ export interface Database {
       profiles: {
         Row: {
           address: string | null
-          created_at: string
-          created_by: string
-          fname: string
-          hourly_rate: number
+          created_at: string | null
+          email: string | null
+          first_name: string | null
+          hourly_rate: number | null
           id: string
-          lname: string
-          modified_at: string | null
-          modified_by: string | null
+          last_name: string | null
           phone: string | null
-          user_id: string
+          updated_at: string | null
         }
         Insert: {
           address?: string | null
-          created_at?: string
-          created_by: string
-          fname: string
-          hourly_rate: number
-          id?: string
-          lname: string
-          modified_at?: string | null
-          modified_by?: string | null
+          created_at?: string | null
+          email?: string | null
+          first_name?: string | null
+          hourly_rate?: number | null
+          id: string
+          last_name?: string | null
           phone?: string | null
-          user_id: string
+          updated_at?: string | null
         }
         Update: {
           address?: string | null
-          created_at?: string
-          created_by?: string
-          fname?: string
-          hourly_rate?: number
+          created_at?: string | null
+          email?: string | null
+          first_name?: string | null
+          hourly_rate?: number | null
           id?: string
-          lname?: string
-          modified_at?: string | null
-          modified_by?: string | null
+          last_name?: string | null
           phone?: string | null
-          user_id?: string
+          updated_at?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "profiles_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "profiles_modified_by_fkey"
-            columns: ["modified_by"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "profiles_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
           }
@@ -94,33 +74,26 @@ export interface Database {
       user_roles: {
         Row: {
           created_at: string
-          created_by: string
+          created_by_email: string | null
           id: number
           role_id: string
           user_id: string
         }
         Insert: {
           created_at?: string
-          created_by: string
+          created_by_email?: string | null
           id?: number
           role_id: string
           user_id: string
         }
         Update: {
           created_at?: string
-          created_by?: string
+          created_by_email?: string | null
           id?: number
           role_id?: string
           user_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "user_roles_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "user_roles_role_id_fkey"
             columns: ["role_id"]
@@ -132,7 +105,7 @@ export interface Database {
             foreignKeyName: "user_roles_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "users"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           }
         ]

@@ -1,33 +1,90 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
   import { onMount } from "svelte";
-
+  import { fly } from "svelte/transition";
   export let data;
-  let { profiles } = data;
-  $: ({ profiles } = data);
+  let { profiles, supabase } = data;
+  $: ({ profiles, supabase } = data);
 
-  console.log(profiles);
+  // import Toast from "$components/Toast.svelte";
+  let showToast = false;
+  let toastMessage = "";
+  let toastType = "success" as "success" | "error";
+
+  function triggerToast(
+    message: string,
+    type: "success" | "error" = "success"
+  ) {
+    showToast = true;
+    toastMessage = message;
+    toastType = type;
+    // Reset after the duration
+    setTimeout(() => {
+      showToast = false;
+      toastMessage = "";
+    }, 3000);
+  }
+
+  async function updateProfile(payload: any) {
+    const response = await fetch("/admin/employee", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log("Server response:", result);
+      triggerToast("Profile updated successfully", "success");
+    } else {
+      const result = await response.json();
+      console.log("Server response:", result);
+      triggerToast("Something went wrong!", "error");
+    }
+  }
 
   let gridContainer: any;
 
   const gridOptions = {
-    // Row Data: The data to be displayed.
     rowData: profiles,
-    // Column Definitions: Defines & controls grid columns.
     columnDefs: [
-      { field: "fname" },
-      { field: "lname" },
-      { field: "location" },
-      { field: "date" },
-      { field: "price" },
-      { field: "successful" },
-      { field: "rocket" },
+      { field: "email", editable: false },
+      { field: "first_name" },
+      { field: "last_name" },
+      { field: "address" },
+      {
+        field: "hourly_rate",
+        headerName: "Hourly Rate",
+        // cellEditor: DoublingEditor,
+        editable: true,
+      },
+      { field: "phone" },
+      {
+        field: "created_at",
+        headerName: "Created At",
+        editable: false,
+        valueFormatter: (params: any) =>
+          new Date(params.value).toLocaleString(),
+      },
+      {
+        field: "updated_at",
+        headerName: "Updated At",
+        editable: false,
+        valueFormatter: (params: any) =>
+          new Date(params.value).toLocaleString(),
+      },
     ],
-
     defaultColDef: {
       sortable: true,
       filter: true,
       resizable: true,
+      editable: true,
+    },
+    onCellValueChanged: function (event: any) {
+      console.log("Cell value changed", event);
+      updateProfile(event.data);
+      // Add your logic here
     },
   };
 
@@ -37,117 +94,38 @@
 </script>
 
 <svelte:head>
-  <title>Employee</title>
+  <title>Profiles</title>
 </svelte:head>
 
-<div class="drawer drawer-end">
-  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-  <div class="drawer-content">
-    <div class="flex justify-between items-center">
-      <h1 class="text-2xl mb-4">Add Profile</h1>
-
-      <label for="my-drawer" class="btn btn-primary drawer-button mb-3"
-        >Add</label
-      >
-    </div>
-
-    <div
-      id="datagrid"
-      class="ag-theme-quartz"
-      style="height: 100vh"
-      bind:this={gridContainer}
-    />
-  </div>
-
-  <div class="drawer-side">
-    <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"
-    ></label>
-
-    <div class="p-4 w-80 min-h-full bg-base-200">
-      <h1 class="text-2xl mb-4">Add Profile</h1>
-
-      <form method="POST" use:enhance>
-        <div class="form-control">
-          <label class="label" for="fname-input">
-            <span class="fname-text">First Name</span>
-          </label>
-          <input
-            name="fname"
-            id="fname-input"
-            placeholder="first name"
-            class="input input-bordered"
-            required
-          />
-        </div>
-
-        <div class="form-control">
-          <label class="label" for="lname-input">
-            <span class="lname-text">Last Name</span>
-          </label>
-          <input
-            name="lname"
-            id="lname-input"
-            placeholder="last name"
-            class="input input-bordered"
-            required
-          />
-        </div>
-
-        <div class="form-control">
-          <label class="label" for="rate-input">
-            <span class="rate-text">Hourly Rate</span>
-          </label>
-          <input
-            type="number"
-            name="rate"
-            id="rate-input"
-            placeholder="hourly rate"
-            class="input input-bordered"
-            required
-          />
-        </div>
-
-        <div class="form-control">
-          <label class="label" for="phone-input">
-            <span class="phone-text">Phone</span>
-          </label>
-          <input
-            type="tel"
-            name="phone"
-            id="phone-input"
-            placeholder="phone"
-            class="input input-bordered"
-          />
-        </div>
-
-        <div class="form-control">
-          <label class="label" for="email-input">
-            <span class="email-text">Email</span>
-          </label>
-          <!-- <input
-            type="email"
-            name="email"
-            id="email-input"
-            placeholder="email"
-            class="input input-bordered"
-            required
-          /> -->
-
-          <select
-            class="select select-bordered w-full max-w-xs"
-            name="email"
-            placeholder="email"
-          >
-            <option disabled selected>Select registered user</option>
-            <option>Han Solo</option>
-            <option>Greedo</option>
-          </select>
-        </div>
-
-        <div class="form-control mt-6">
-          <input type="submit" value="Submit" class="btn btn-primary" />
-        </div>
-      </form>
-    </div>
-  </div>
+<div>
+  <h1 class="text-2xl mb-4">Profiles</h1>
+  <div
+    id="datagrid"
+    class="ag-theme-quartz"
+    style="height: 100vh"
+    bind:this={gridContainer}
+  />
 </div>
+
+{#if showToast}
+  <div
+    class="toast toast-top toast-center"
+    transition:fly={{ y: 200, duration: 300 }}
+  >
+    <div role="alert" class={`alert alert-${toastType}`}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="stroke-current shrink-0 h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        ><path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+        /></svg
+      >
+      <span>{toastMessage}</span>
+    </div>
+  </div>
+{/if}
